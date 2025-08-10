@@ -13,17 +13,24 @@ import BidHistory from "../components/BidHistory";
 import "../styles/auction.css";
 
 export default function Auction() {
+  // Stores auction items from Firestore
   const [items, setItems] = useState([]);
+  // Stores bid amounts keyed by item ID
   const [bidByItem, setBidByItem] = useState({});
+  // Stores the current authenticated user
   const [user, setUser] = useState(null);
+  // Stores error messages for user feedback
   const [error, setError] = useState("");
+  // Track “show bid history” per item
   const [historyOpen, setHistoryOpen] = useState({});
 
+  // Subscribes to auth state changes
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => setUser(u));
     return () => unsub();
   }, []);
 
+  // Subscribes to live updates for items
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "items"), (snap) => {
       const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
@@ -35,8 +42,10 @@ export default function Auction() {
     return () => unsub();
   }, []);
 
+  // Handles bid submission for an item
   const handleBid = async (item) => {
     setError("");
+
     if (item.isClosed) {
       setError("Bidding is closed for this item.");
       return;
@@ -48,6 +57,7 @@ export default function Auction() {
 
     const raw = bidByItem[item.id];
     const amount = Number(raw);
+
     if (!Number.isFinite(amount) || amount <= 0) {
       setError("Enter a valid bid amount.");
       return;
@@ -55,6 +65,7 @@ export default function Auction() {
 
     const currentTop = Number(item.topBidAmount || 0);
     const minRequired = currentTop + 1;
+
     if (amount < minRequired) {
       setError(
         `Bid must be at least $${minRequired.toFixed(
@@ -65,6 +76,7 @@ export default function Auction() {
     }
 
     try {
+      // Write bid to subcollection (history)
       await addDoc(collection(db, "items", item.id, "bids"), {
         userId: user.uid,
         userEmail: user.email || "(no email)",
@@ -72,6 +84,7 @@ export default function Auction() {
         createdAt: serverTimestamp(),
       });
 
+      // Update leaderboard on item
       await updateDoc(doc(db, "items", item.id), {
         topBidAmount: amount,
         topBidUserId: user.uid,
@@ -87,7 +100,15 @@ export default function Auction() {
 
   return (
     <div className="page">
-      <h2 className="pageTitle">Active Auction Items</h2>
+      <header className="pageHeader">
+        <div className="titleRow">
+          <span className="accentDot" />
+          <h2 className="pageTitle">Active Auction Items</h2>
+        </div>
+        <p className="pageSubtitle">
+          Real-time updates. Minimum +$1 per bid. Highest bid leads.
+        </p>
+      </header>
 
       {error && <p className="errorText">{error}</p>}
 

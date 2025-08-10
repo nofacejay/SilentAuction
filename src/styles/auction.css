@@ -1,199 +1,169 @@
-/* Page container styling */
+/* ---- Dark minimalist styling for Auction page ---- */
+
+:root{
+  --bg: #121212;
+  --surface: #1a1c1f;
+  --muted: #a7b0b6;
+  --text: #e9eef2;
+  --accent: #00bfa5;
+  --border: #23262a;
+  --ring: rgba(0,191,165,.25);
+}
+
+/* Page wrapper */
 .page {
   padding: 24px;
   max-width: 1100px;
   margin: 0 auto;
-  background: #f9fafb;
+  background: transparent;
+  color: var(--text);
 }
 
-/* Page title styling */
+/* ===== Header ===== */
+.pageHeader { margin: 4px 0 18px; }
+.titleRow { display: flex; align-items: center; gap: 10px; }
+.accentDot {
+  width: 10px; height: 10px; border-radius: 9999px;
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(0,191,165,.6);
+}
 .pageTitle {
-  margin: 0 0 16px 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0f172a;
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: #fff;
+}
+/* thin accent underline */
+.pageHeader::after{
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: 12px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, rgba(0,191,165,.75), rgba(255,255,255,.06));
+}
+.pageSubtitle{
+  margin: 6px 0 0;
+  color: var(--muted);
 }
 
-/* Empty state text styling */
-.emptyText {
-  color: #555;
-  padding: 12px 0;
-}
+/* Empty text */
+.emptyText { color: var(--muted); padding: 12px 0; }
 
-/* Error message styling */
+/* Error box */
 .errorText {
-  color: #d42a2a;
-  background: #ffecec;
-  border: 1px solid #f5bcbc;
+  color: #ffb4b4;
+  background: #2a1718;
+  border: 1px solid #4b2326;
   padding: 10px 12px;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  border-radius: 10px;
+  margin: 12px 0 16px;
 }
 
-/* Grid layout for item cards */
+/* Grid */
 .itemsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 16px;
 }
 
-/* Card container styling */
+/* Card */
 .itemCard {
   display: grid;
   grid-template-rows: auto 1fr;
-  background: #ffffff;
-  border: 1px solid #eaeaea;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.04);
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
   transition: box-shadow .15s ease, transform .15s ease;
 }
-.itemCard:hover {
-  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.08);
-  transform: translateY(-1px);
-}
+.itemCard:hover { box-shadow: 0 6px 18px rgba(0,0,0,.35); transform: translateY(-1px); }
 
-/* Image wrapper to control image height */
-.itemMedia {
-  width: 100%;
-  height: 180px;
-  overflow: hidden;
-  background: #f3f4f6;
-}
+/* Media */
+.itemMedia { width: 100%; height: 180px; overflow: hidden; background: #131519; }
+.itemImage { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* Item image styling */
-.itemImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+/* Body */
+.itemBody { padding: 14px 14px 16px; }
+.itemTitle { margin: 0; font-size: 1.1rem; font-weight: 700; color: #fff; }
+.itemDesc  { margin: 8px 0 10px; color: var(--muted); line-height: 1.45; }
+.topBid    { margin: 0 0 10px; font-weight: 700; color: #cde2ff; }
 
-/* Card body padding */
-.itemBody {
-  padding: 14px 14px 16px 14px;
-}
-
-/* Title styling */
-.itemTitle {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #111827;
-}
-
-/* Description styling */
-.itemDesc {
-  margin: 8px 0 10px 0;
-  color: #374151;
-  line-height: 1.45;
-}
-
-/* Top bid text styling */
-.topBid {
-  margin: 0 0 10px 0;
-  font-weight: 600;
-  color: #0f172a;
-}
-
-/* Badge styles (open/closed) */
+/* Status badges */
 .badge {
   padding: 4px 10px;
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 700;
+  border: 1px solid var(--border);
 }
-.badgeOpen {
-  background: #e0f2fe;
-  color: #0369a1;
-  border: 1px solid #bae6fd;
-}
-.badgeClosed {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-}
+.badgeOpen  { background: #0b2b28; color: #86fff0; border-color: #16413c; }
+.badgeClosed{ background: #2b0b0b; color: #ffb4b4; border-color: #4b2326; }
 
-/* Bid row: responsive so the button never overflows */
-.bidRow {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-}
+/* Bid row */
+.bidRow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
-/* Input grows to fill available space; min width keeps it usable */
-.bidInput {
-  flex: 1 1 160px;
-  min-width: 0;
+/* Input (dark) */
+.bidInput{
+  flex: 1 1 160px; min-width: 0;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid #d1d5db;
-  background: #fff;
+  border: 1px solid var(--border);
+  background: #131519;
+  color: var(--text);
   outline: none;
-  transition: border-color .15s ease, box-shadow .15s ease;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
 }
-.bidInput:focus {
-  border-color: #111827;
-  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
-}
-
-/* Button sizing so it doesn't try to stretch */
-.bidButton {
-  flex: 0 0 auto;
+.bidInput::placeholder{ color: #808991; }
+.bidInput:focus{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--ring);
+  background: #151920;
 }
 
-/* Base button styling */
-.btn {
+.bidButton { flex: 0 0 auto; }
+
+/* Buttons */
+.btn{
   padding: 10px 14px;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: 600;
-  transition: transform .06s ease, opacity .15s ease, box-shadow .15s ease;
+  font-weight: 700;
+  transition: transform .06s ease, opacity .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
 }
-.btn:active {
-  transform: translateY(1px);
-}
-.btnPrimary {
-  background: #111827;
-  color: #ffffff;
-  box-shadow: 0 2px 6px rgba(17, 24, 39, 0.2);
-}
-.btnPrimary:hover { opacity: 0.92; }
+.btn:active { transform: translateY(1px); }
 
-/* Ghost button variant */
-.btnGhost {
-  background: #ffffff;
-  color: #111827;
-  border: 1px solid #d1d5db;
+.btnPrimary{
+  background: var(--accent);
+  color: #0f1316;
+  box-shadow: 0 6px 18px rgba(0,191,165,.3);
 }
-.btnGhost:hover {
-  background: #f3f4f6;
-}
+.btnPrimary:hover{ opacity: .92; }
 
-/* Toggle row above history */
-.historyToggleRow {
+.btnGhost{
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.btnGhost:hover{ background: #15181c; }
+
+/* History */
+.historyToggleRow { margin-top: 10px; }
+
+.history{
   margin-top: 10px;
-}
-
-/* History section styling */
-.history {
-  margin-top: 10px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 12px;
-  background: #ffffff;
+  background: #14171b;
   padding: 8px;
-  box-shadow: inset 0 0 0 1px rgba(229, 231, 235, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
 }
+.historyEmpty{ margin: 6px 6px 8px; color: var(--muted); }
 
-.historyEmpty {
-  margin: 6px 6px 8px;
-  color: #6b7280;
-}
-
-/* Row layout + hover treatment */
-.historyRow {
+.historyRow{
   display: grid;
   grid-template-columns: 110px 1fr auto;
   gap: 10px;
@@ -202,35 +172,17 @@
   border-radius: 10px;
   transition: background .12s ease;
 }
-.historyRow + .historyRow {
-  margin-top: 6px;
-}
-.historyRow:hover {
-  background: #f9fafb;
-}
+.historyRow + .historyRow{ margin-top: 6px; }
+.historyRow:hover{ background: #101318; }
 
-/* Amount pill for emphasis */
-.historyRow .amt {
+.historyRow .amt{
   justify-self: start;
   padding: 4px 10px;
   border-radius: 9999px;
   font-weight: 700;
   color: #0b1020;
-  background: #eef2ff;
-  border: 1px solid #e0e7ff;
+  background: #d9f8f1;
+  border: 1px solid #b8f0e4;
 }
-
-/* Bidder email / id */
-.historyRow .by {
-  color: #374151;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Timestamp */
-.historyRow .time {
-  color: #6b7280;
-  font-size: 0.9rem;
-  justify-self: end;
-}
+.historyRow .by{ color: #bfc7cd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.historyRow .time{ color: #8b96a1; font-size: .9rem; justify-self: end; }

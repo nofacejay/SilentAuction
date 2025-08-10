@@ -1,0 +1,16 @@
+/* Dark minimalist background for the page */
+body {
+  background-color: #121212;  
+}
+
+/* Make the Home title pop on dark backgrounds */
+.container .card h1 {
+  color: #ff0000 !important;     
+  font-weight: 800;
+}
+
+/* Slightly muted supporting text */
+.container .card .muted {
+  color: #b3b3b3;
+}
+

@@ -1,23 +1,91 @@
-.admin-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1rem;
-  background: #fff;
-  border-radius: 8px;
+/* Global page background & text */
+body {
+  background-color: #3d3d3d; /* Soft dark grey background */
+  color: #ffffff; /* Default text is white */
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.admin-container form input {
-  display: block;
-  width: 100%;
-  margin-bottom: 0.75rem;
-  padding: 0.5rem;
+/* Centering container for the hero section */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.admin-container button {
-  padding: 0.5rem 1rem;
-  background-color: #222;
-  color: #fff;
-  border: none;
+/* Card styling */
+.card {
+  background-color: #1e1e1e; /* Slightly lighter than background for contrast */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Stack layout (vertical elements with gap) */
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Title */
+h1 {
+  color: #ffffff; /* Pure white for visibility */
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Muted text (subheadings / tips) */
+.muted {
+  color: #b3b3b3;
+}
+
+/* Row layout */
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+.rowCenter {
+  justify-content: center;
+  align-items: center;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 4px;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+/* Primary button (bright teal) */
+.btnPrimary {
+  background-color: #00b894;
+  color: #ffffff;
+}
+
+.btnPrimary:hover {
+  background-color: #019875;
+}
+
+/* Ghost button (transparent with white border) */
+.btnGhost {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.btnGhost:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Spacing helpers */
+.spacer-sm {
+  height: 0.8rem;
 }
