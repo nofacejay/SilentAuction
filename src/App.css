@@ -1,0 +1,23 @@
+.admin-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.admin-container form input {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+}
+
+.admin-container button {
+  padding: 0.5rem 1rem;
+  background-color: #222;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}

@@ -1,0 +1,154 @@
+/* Page container */
+.adminPage {
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Shared titles */
+.pageTitle {
+  margin: 0 0 16px;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.sectionTitle {
+  margin: 20px 0 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* Error and info */
+.errorText {
+  color: #d42a2a;
+  background: #ffecec;
+  border: 1px solid #f5bcbc;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.infoText {
+  color: #155e34;
+  background: #e7f6ee;
+  border: 1px solid #bce3cf;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+/* New item form */
+.itemForm {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.itemForm input,
+.itemForm textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+}
+.itemForm input:focus,
+.itemForm textarea:focus {
+  border-color: #111827;
+}
+
+/* Items grid */
+.itemsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* Item card */
+.itemCard {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.04);
+  display: grid;
+  grid-template-columns: 120px 1fr;
+}
+.thumb {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  background: #f6f6f6;
+}
+.itemBody {
+  padding: 12px;
+}
+.itemTitle {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.itemDesc {
+  margin: 0 0 8px;
+  color: #374151;
+}
+.meta {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+/* Winner text */
+.winner {
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: #065f46;
+}
+
+/* Status badges */
+.badge {
+  padding: 4px 8px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.badgeOpen {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+.badgeClosed {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* Button row */
+.btnRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btnPrimary {
+  background: #111827;
+  color: #fff;
+}
+.btnDanger {
+  background: #b91c1c;
+  color: #fff;
+}
+.btnWarn {
+  background: #92400e;
+  color: #fff;
+}
+.btnGhost {
+  background: transparent;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+.btn:hover { opacity: 0.92; }
+.btnGhost:hover { background: #f3f4f6; }
