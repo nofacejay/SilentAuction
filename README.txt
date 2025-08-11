@@ -1,7 +1,8 @@
 SILENT AUCTION - Jayden Prasad 300367841
 
 Live Demo: 
-[https://silentauction-nofacejay.vercel.app](https://silentauction-nofacejay.vercel.app)
+https://silent-auction-one.vercel.app
+
 
 Project Description
 A real-time auctioning platform so users can place register, login, place bids and view auctions.
