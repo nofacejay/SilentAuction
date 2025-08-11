@@ -1,0 +1,78 @@
+:root{
+  --bg: #121212;
+  --surface: #1a1c1f;
+  --muted: #a7b0b6;
+  --text: #e9eef2;
+  --accent: #00bfa5;
+  --border: #23262a;
+}
+
+.notifPage{
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  color: var(--text);
+}
+
+.notifTitle{
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #000000;
+}
+
+.notifSubtitle{
+  margin: 0 0 14px;
+  color: var(--muted);
+}
+
+.emptyText{
+  color: var(--muted);
+}
+
+.notifList{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.notifCard{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+
+.rowBetween{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.to{
+  color: #e9eef2;
+}
+
+.sentAt{
+  color: #cde2ff;
+  font-size: .95rem;
+}
+
+.subject{
+  margin-top: 8px;
+  font-weight: 700;
+  color: #e9eef2;
+}
+
+.body{
+  margin-top: 6px;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+
+.itemRef{
+  margin-top: 8px;
+  color: #93a1ad;
+}

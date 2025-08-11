@@ -1,4 +1,4 @@
-/* ---- Dark minimalist styling for Auction page ---- */
+/* ---- Dark minimalist styling for Auction page with search ---- */
 
 :root{
   --bg: #121212;
@@ -34,7 +34,6 @@
   letter-spacing: .2px;
   color: #fff;
 }
-/* thin accent underline */
 .pageHeader::after{
   content: "";
   display: block;
@@ -48,10 +47,34 @@
   color: var(--muted);
 }
 
-/* Empty text */
-.emptyText { color: var(--muted); padding: 12px 0; }
+/* ===== Search bar ===== */
+.filterBar{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 10px 0 16px;
+  flex-wrap: wrap;
+}
+.searchInput{
+  flex: 1 1 280px;
+  min-width: 200px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #131519;
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.searchInput::placeholder{ color: #808991; }
+.searchInput:focus{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--ring);
+  background: #151920;
+}
 
-/* Error box */
+/* Empty / error text */
+.emptyText { color: var(--muted); padding: 12px 0; }
 .errorText {
   color: #ffb4b4;
   background: #2a1718;

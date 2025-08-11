@@ -11,21 +11,18 @@ import {
   orderBy,
   limit,
 } from "firebase/firestore";
+import { Link } from "react-router-dom";
 import { db } from "../firebase";
 import "../styles/admin.css";
 
 export default function AdminDashboard() {
-  // stores current list of items
   const [items, setItems] = useState([]);
-  // add-item form fields
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [image, setImage] = useState("");
-  // UI messages
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
 
-  // fetch all items
   const fetchItems = async () => {
     const snap = await getDocs(collection(db, "items"));
     const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
@@ -37,7 +34,6 @@ export default function AdminDashboard() {
     fetchItems();
   }, []);
 
-  // create new item
   const handleAddItem = async (e) => {
     e.preventDefault();
     setError("");
@@ -73,28 +69,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // delete item (delete subcollection bids first, then item)
-  const handleDelete = async (itemId) => {
-    setError("");
-    setInfo("");
-
-    try {
-      const bidsSnap = await getDocs(collection(db, "items", itemId, "bids"));
-      const deletions = bidsSnap.docs.map((b) =>
-        deleteDoc(doc(db, "items", itemId, "bids", b.id))
-      );
-      await Promise.all(deletions);
-
-      await deleteDoc(doc(db, "items", itemId));
-
-      await fetchItems();
-      setInfo("Item deleted.");
-    } catch (e) {
-      setError(e.message);
-    }
-  };
-
-  // compute winner from bids and sync topBid fields
   const declareWinner = async (itemId) => {
     const bidsQ = query(
       collection(db, "items", itemId, "bids"),
@@ -119,21 +93,15 @@ export default function AdminDashboard() {
       amount: Number(top.amount || 0),
     };
 
-    // keep leaderboard + winner in sync so Top bid is accurate
     await updateDoc(doc(db, "items", itemId), {
       winnerUserId: winner.userId,
       winnerUserEmail: winner.userEmail,
       winnerAmount: winner.amount,
-      topBidAmount: winner.amount,
-      topBidUserId: winner.userId,
-      topBidUserEmail: winner.userEmail,
-      updatedAt: serverTimestamp(),
     });
 
     return winner;
   };
 
-  // close auction
   const handleClose = async (itemId) => {
     setError("");
     setInfo("");
@@ -145,12 +113,19 @@ export default function AdminDashboard() {
         closedAt: serverTimestamp(),
       });
 
+      const item = items.find((i) => i.id === itemId);
+
       if (winner && winner.userEmail) {
-        const item = items.find((i) => i.id === itemId);
+        await addDoc(collection(db, "notifications"), {
+          to: winner.userEmail,
+          subject: "You won a Silent Auction item 🎉",
+          body: `Congrats! You won${item?.title ? ` "${item.title}"` : ""} with a bid of $${winner.amount.toFixed(2)}.`,
+          itemId,
+          sentAt: serverTimestamp(),
+        });
+
         setInfo(
-          `Auction closed. Winner: ${winner.userEmail} — $${winner.amount.toFixed(2)}${
-            item?.title ? ` (${item.title})` : ""
-          }.`
+          `Auction closed. Winner: ${winner.userEmail} — $${winner.amount.toFixed(2)}${item?.title ? ` (${item.title})` : ""}. Notification created.`
         );
       } else {
         setInfo("Auction closed. No bids were placed.");
@@ -162,7 +137,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // reopen auction
   const handleReopen = async (itemId) => {
     setError("");
     setInfo("");
@@ -181,7 +155,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // recompute winner without closing
   const handleComputeWinnerOnly = async (itemId) => {
     setError("");
     setInfo("");
@@ -198,11 +171,26 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleDelete = async (itemId) => {
+    setError("");
+    setInfo("");
+    try {
+      await deleteDoc(doc(db, "items", itemId));
+      await fetchItems();
+      setInfo("Item deleted.");
+    } catch (e) {
+      setError(`Delete failed: ${e.message}`);
+    }
+  };
+
   return (
     <div className="adminPage">
-      <div className="headerBar">
-        <span className="accentDot" />
-        <h2 className="pageTitle">Admin Dashboard</h2>
+      {/* Top bar with Notifications link */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 10 }}>
+        <h2 className="pageTitle" style={{ color: "#000", margin: 0 }}>Admin Dashboard</h2>
+        <Link to="/notifications">
+          <button className="btn btnGhost" style={{ color: "#000" }}>View Notifications</button>
+        </Link>
       </div>
 
       {error && <p className="errorText">{error}</p>}
@@ -233,65 +221,54 @@ export default function AdminDashboard() {
         <button type="submit" className="btn btnPrimary">Add Item</button>
       </form>
 
-      <div className="sectionHeader">
-        <h3 className="sectionTitle">Current Auction Items</h3>
-      </div>
-
+      <h3 className="sectionTitle" style={{ color: "#000" }}>Current Auction Items</h3>
       <div className="itemsGrid">
         {items.length === 0 && <p className="emptyText">No items yet.</p>}
-        {items.map((it) => {
-          // show true top bid even for older items
-          const safeTop =
-            Math.max(Number(it.topBidAmount || 0), Number(it.winnerAmount || 0)) || 0;
+        {items.map((it) => (
+          <div key={it.id} className="itemCard">
+            {it.image && <img className="thumb" src={it.image} alt={it.title} />}
+            <div className="itemBody">
+              <div className="rowBetween">
+                <h4 className="itemTitle">{it.title}</h4>
+                <span className={`badge ${it.isClosed ? "badgeClosed" : "badgeOpen"}`}>
+                  {it.isClosed ? "Closed" : "Open"}
+                </span>
+              </div>
 
-          return (
-            <div key={it.id} className="itemCard">
-              {it.image && <img className="thumb" src={it.image} alt={it.title} />}
-              <div className="itemBody">
-                <div className="rowBetween">
-                  <h4 className="itemTitle">{it.title}</h4>
-                  <span className={`badge ${it.isClosed ? "badgeClosed" : "badgeOpen"}`}>
-                    {it.isClosed ? "Closed" : "Open"}
-                  </span>
-                </div>
+              <p className="itemDesc">{it.description}</p>
 
-                <p className="itemDesc">{it.description}</p>
+              <p className="meta">
+                Top bid: ${Number(it.topBidAmount || 0).toFixed(2)}
+              </p>
 
-                <p className="meta">Top bid: ${safeTop.toFixed(2)}</p>
+              {it.winnerUserEmail && (
+                <p className="winner">
+                  Winner: {it.winnerUserEmail} — ${Number(it.winnerAmount || 0).toFixed(2)}
+                </p>
+              )}
 
-                {it.winnerUserEmail && (
-                  <p className="winner">
-                    Winner: {it.winnerUserEmail} — $
-                    {Number(it.winnerAmount || 0).toFixed(2)}
-                  </p>
-                )}
-
-                <div className="btnRow">
-                  {!it.isClosed ? (
-                    <>
-                      <button className="btn btnPrimary" onClick={() => handleClose(it.id)}>
-                        Close & Declare Winner
-                      </button>
-                      <button
-                        className="btn btnGhost"
-                        onClick={() => handleComputeWinnerOnly(it.id)}
-                      >
-                        Compute Winner (Preview)
-                      </button>
-                    </>
-                  ) : (
-                    <button className="btn btnWarn" onClick={() => handleReopen(it.id)}>
-                      Reopen Auction
+              <div className="btnRow">
+                {!it.isClosed ? (
+                  <>
+                    <button className="btn btnPrimary" onClick={() => handleClose(it.id)}>
+                      Close & Declare Winner
                     </button>
-                  )}
-                  <button className="btn btnDanger" onClick={() => handleDelete(it.id)}>
-                    Delete
+                    <button className="btn btnGhost" onClick={() => handleComputeWinnerOnly(it.id)}>
+                      Compute Winner (Preview)
+                    </button>
+                  </>
+                ) : (
+                  <button className="btn btnWarn" onClick={() => handleReopen(it.id)}>
+                    Reopen Auction
                   </button>
-                </div>
+                )}
+                <button className="btn btnDanger" onClick={() => handleDelete(it.id)}>
+                  Delete
+                </button>
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </div>
   );

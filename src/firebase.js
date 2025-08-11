@@ -11,7 +11,7 @@ const firebaseConfig = {
   projectId: "silentauction-d318b",
   storageBucket: "silentauction-d318b.appspot.com",
   messagingSenderId: "913747180762",
-  appId: "1:913747180762:web:48f7389eb8c0c26d7bb9e3",
+  appId: "1:913747180762:web:48f7389eb8c0c26d7bb9e3"
 };
 
 // Initialize Firebase
